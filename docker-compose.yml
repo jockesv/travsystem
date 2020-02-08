@@ -1,0 +1,14 @@
+version: "3.4"
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: web/Dockerfile
+    image: jockesv/travsystem-web
+    networks: 
+      - webnet
+
+networks:
+  webnet:
+    driver: overlay
+    attachable: true    
