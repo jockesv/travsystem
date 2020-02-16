@@ -4,10 +4,16 @@ WORKDIR /app
 # copy csproj and restore as distinct layers
 COPY *.sln .
 COPY Travsystem.Web/*.csproj ./Travsystem.Web/
+COPY Travsystem.Model/*.csproj ./Travsystem.Model/
+COPY Travsystem.Service/*.csproj ./Travsystem.Service/
+COPY Travsystem.NUnit/*.csproj ./Travsystem.NUnit/
+COPY Travsystem.IO/*.csproj ./Travsystem.IO/
 RUN dotnet restore
 
 # copy everything else and build app
 COPY Travsystem.Web/. ./Travsystem.Web/
+COPY Travsystem.Model/. ./Travsystem.Model/
+COPY Travsystem.Service/. ./Travsystem.Service/
 WORKDIR /app/Travsystem.Web
 RUN dotnet publish -c Release -o out
 
