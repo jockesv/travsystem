@@ -1,0 +1,17 @@
+<div ng-controller="LoginController as loginController">
+    <form name="loginForm" ng-submit="loginController.login(loginController.credentials)" novalidate>
+        <div class="modal-header">
+            <h3 class="modal-title">Logga in</h3>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-danger" role="alert" ng-show="loginController.showAlert"><strong>Felaktig e-postadress eller lösenord</strong></div>
+            <label for="username">E-post: </label><br />
+            <input type="text" id="username" ng-model="loginController.credentials.username"><br />
+            <label for="password">Lösenord: </label><br />
+            <input type="password" id="password" ng-model="loginController.credentials.password">
+        </div>
+        <div class="modal-footer">
+            <button type="submit">Login</button>
+        </div>
+    </form>
+</div>

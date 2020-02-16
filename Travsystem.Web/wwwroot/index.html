@@ -1,0 +1,183 @@
+﻿<!doctype html>
+<html ng-app="travLabApp">
+<head>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-sanitize.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-cookies.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/linq.js/2.2.0.2/linq.min.js"></script>
+    <!--<script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+    <script src="main.js"></script>
+    <script src="odds-rank.js"></script>
+    <script src="abcd-reduction.js"></script>
+    <script src="coupon.js"></script>
+
+    <!-- Login includes  -->
+    <script src="login-auth-interceptor.js"></script>
+    <script src="login-auth-service.js"></script>
+    <script src="login-config.js"></script>
+    <script src="login-constants.js"></script>
+    <script src="login-controller.js"></script>
+    <script src="login-dialog-directive.js"></script>
+    <script src="login-modal-instance-ctrl.js"></script>
+    <script src="login-session.js"></script>
+    
+
+    <script src="loading-bar.js"></script>
+    <script src="dataservice.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/loading-bar.css">
+
+    <title>Travlab 2.0</title>
+</head>
+<body>
+    <div ng-controller="TravLabController as vm">
+        <nav class="navbar navbar-inverse navbar-default">
+            <div class="container">
+                <ul class="nav navbar-nav navbar-right" ng-hide="vm.userName== null">
+                    <li class="dropdown" dropdown>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" dropdown-toggle>{{vm.userName}}<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" dropdown-menu>
+                            <li><a ng-click="vm.logout()">Logga ut</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" ng-hide="vm.userName != null">
+                    <li><a href="#" ng-click="vm.login()">Logga in</a></li>
+                    <!--<li><a class="navbar-brand" href="#">TravLab WebClient 1.0</a></li> -->
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown" dropdown>
+                        <a href="#" ng-click="vm.loadRaceDays()" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" dropdown-toggle>Välj spel <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" dropdown-menu>
+                            <li ng-repeat="race in vm.raceDays"><a ng-click="vm.loadRace(race)">{{vm.formatRaceTitle(race)}}</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="#" ng-click="vm.getBetFile()">Generera ATG-fil</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default" ng-show="vm.laps != null">
+                        <div class="panel-heading">
+                            {{vm.formatRaceTitle(vm.selectedRace)}}
+                        </div>
+                        <div class="panel-body">
+                            <tabset>
+                                <tab ng-repeat="lap in vm.laps" heading="AVD {{lap.number}}" active="tab.active" disabled="tab.disabled">
+                                    <div class="table-responsive">
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <th><a href="" ng-click="predicate = 'startNumber'; reverse=!reverse">Nummer</a></th>
+                                                <th><a href="" ng-click="predicate = 'rank'; reverse=!reverse">Rank</a></th>
+                                                <th><a href="" ng-click="predicate = 'name'; reverse=!reverse">Namn</a></th>
+                                                <th><a href="" ng-click="predicate = 'driver'; reverse=!reverse">Kusk</a></th>
+                                                <th><a href="" ng-click="predicate = 'gender'; reverse=!reverse">Typ</a></th>
+                                                <th><a href="" ng-click="predicate = 'age'; reverse=!reverse">Ålder</a></th>
+                                                <th><a href="" ng-click="predicate = 'odds'; reverse=!reverse">Odds</a></th>
+                                                <th><a href="" ng-click="predicate = 'marksQuantity'; reverse=!reverse">Streck</a></th>
+                                                <th><a href="" ng-click="predicate = 'marksPercentage'; reverse=!reverse">Streck(%)</a></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="row in lap.horses | orderBy:predicate:reverse track by $index" ng-class="{{vm.getStatus(row)}}">
+                                                    <td>{{ row.StartNumber }}</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <label class="btn btn-primary btn-xs" ng-model="row.rank" ng-repeat="rank in vm.ranksEnum" btn-radio="rank.val" uncheckable>{{rank.val}}</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ row.name }}</td>
+                                                    <td>{{ row.driver }}</td>
+                                                    <td>{{ row.gender }}</td>
+                                                    <td>{{ row.age }}</td>
+                                                    <td>{{ row.odds }}</td>
+                                                    <td>{{ row.marksQuantity }}</td>
+                                                    <td>{{ row.marksPercentage }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="panel panel-default" ng-show="vm.laps != null">
+                        <div class="panel-heading">Ram</div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-condensed table-bordered">
+                                    <tbody>
+                                        <tr ng-repeat="lap in vm.laps">
+                                            <td>AVD {{lap.number}}</td>
+                                            <td ng-repeat="row in lap.horses track by $index" ng-style="vm.getColorForCell(lap, row)">{{row.startNumber + '' + (row.rank == null ? '' : row.rank)}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="panel panel-default" ng-show="vm.abcdRankSettings != null">
+                        <div class="panel-heading">ABCD-ranking</div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-condensed table-bordered">
+                                    <tbody>
+                                        <tr ng-repeat="row in vm.abcdRankSettings">
+                                            <td>{{row.title}}</td>
+                                            <td ng-repeat="col in row.content track by $index" ng-click="vm.onABCDRankClick(row, col)" ng-class="{'selected-abcd-rank': col.selected}">{{col.value}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <div class="panel panel-default" ng-show="vm.abcdRankSettings != null">
+                        <div class="panel-heading">Fakta</div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-condensed">
+                                    <tbody>
+                                        <tr>
+                                            <td>Systemstorlek:</td>
+                                            <td>{{vm.systemSize}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Reduceringsgrad:</td>
+                                            <td>{{vm.reductionLevel}} %</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Reducerad storlek:</td>
+                                            <td>{{vm.reducedRowsSize}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kostnad:</td>
+                                            <td>{{vm.cost}} kr</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

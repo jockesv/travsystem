@@ -3,7 +3,7 @@ services:
   web:
     build:
       context: ./
-      dockerfile: web/Dockerfile
+      dockerfile: Travsystem.Web/Dockerfile
     image: jockesv/travsystem-web
     networks: 
       - webnet

@@ -1,0 +1,51 @@
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background: #e8e8e8; 
+    /*background: -moz-linear-gradient(top,  #8d8970 0%, #f9f9c5 100%); 
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8d8970), color-stop(100%,#f9f9c5));
+    background: -webkit-linear-gradient(top,  #8d8970 0%,#f9f9c5 100%);
+    background: -o-linear-gradient(top,  #8d8970 0%,#f9f9c5 100%); 
+    background: -ms-linear-gradient(top,  #8d8970 0%,#f9f9c5 100%); 
+    background: linear-gradient(to bottom,  #8d8970 0%,#f9f9c5 100%); 
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8d8970', endColorstr='#f9f9c5',GradientType=0 );*/ 
+}
+
+.done-true {
+  text-decoration: line-through;
+  color: grey;
+}
+
+tr[ng-class=good] {
+  background-color: LightGreen !important;
+}
+
+tr[ng-class=medium] {
+  background-color: LightYellow !important;
+}
+
+tr[ng-class=bad] {
+  background-color: LightCoral !important;
+}
+
+tr[ng-class=disabled] {
+  background-color:  LightGray !important;
+}
+
+.selected-abcd-rank {
+	background-color: LightGray  !important;
+}
+
+.ram {
+  background-color: LightGray  !important; 
+}
+
+.table-nonfluid {
+   width: auto;
+}
+
+.modal-backdrop {
+  bottom: 0;
+  position: fixed;
+}
+
