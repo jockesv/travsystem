@@ -10,6 +10,7 @@ namespace Travsystem.Model
         public int Date { get; set; }
         public string BetType { get; set; }
         public int TrackId { get; set; }
+		public string GameId { get; set; }
     }
 
 	public class LegResponse
@@ -19,7 +20,9 @@ namespace Travsystem.Model
 			Horses = new List<HorseResponse> ();
 		}
 		public int Number { get; set; }
-		public string Type { get; set; }
+		public string StartMethod { get; set; }
+		public string Name { get; set; }
+		public string Distance { get; set; }
 		public List<HorseResponse> Horses { get; set; }
 		public bool Open { get; set; }
 	}
@@ -38,6 +41,10 @@ namespace Travsystem.Model
 		public string Rank { get; set; }
 		public float RankTal { get; set; }
 		public int RankOrder { get; set; }
+		public int Money { get; set; }
+		public string Record { get; set; }
+		public string PlaceOdds { get; set; }
+		public int StartPoints { get; set; }
 	}
 
 	public class LoginRequest

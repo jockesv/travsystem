@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -25,21 +26,22 @@ namespace Travsystem.Web
         [HttpPost("GetRace"), Produces("application/json")]
         public async Task<ActionResult<IList<LegResponse>>> GetRace (RaceRequest raceRequest)
         {
-            return await _atgService.GetRaceDay();
+            return await _atgService.GetRace(raceRequest.Race.GameId);
         }
 
         [HttpPost("GetRaceDays"), Produces("application/json")]
-        public ActionResult<IList<RaceDayResponse>> GetRaceDays(RaceDaysRequest raceDayRequest)
+        public async Task<ActionResult<IList<RaceDayResponse>>> GetRaceDays(RaceDaysRequest raceDayRequest)
         {
-            return new List<RaceDayResponse> {
-                new RaceDayResponse {
-                    BetType = "V75",
-                    Date = 15,
-                    Month = 2,
-                    Year = 2020,
-                    TrackId = 22
+            var today = DateTime.Now;
+            for (var i = 0; i < 7; i++)
+            {
+                var raceday = await _atgService.GetRaceDay(today.AddDays(i));
+                if (raceday != null)
+                {
+                    return new List<RaceDayResponse>{raceday};
                 }
-            };
+            }
+            return new List<RaceDayResponse>();
         }
 
         [HttpPost("GetBettingFile"), Produces("application/json")]
@@ -52,9 +54,9 @@ namespace Travsystem.Web
         public ActionResult<LoginResponse> Login(LoginRequest loginRequest)
         {
             return new LoginResponse {
-                Name = "kalle",
+                Name = loginRequest.username,
                 Role = "User",
-                Ticket = "xxxxxx"
+                Ticket = System.Guid.NewGuid().ToString()
             };
         }
 

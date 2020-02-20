@@ -73,23 +73,25 @@
                         </div>
                         <div class="panel-body">
                             <tabset>
-                                <tab ng-repeat="lap in vm.laps" heading="AVD {{lap.number}}" active="tab.active" disabled="tab.disabled">
+                                <tab ng-repeat="lap in vm.laps" heading="AVD {{lap.number}}" active="tab.active" disabled="tab.disabled" 
+                                    tooltip="{{lap.distance}}M {{lap.startMethod.toUpperCase()}} / {{lap.name}}">
                                     <div class="table-responsive">
                                         <table class="table table-condensed">
                                             <thead>
-                                                <th><a href="" ng-click="predicate = 'startNumber'; reverse=!reverse">Nummer</a></th>
-                                                <th><a href="" ng-click="predicate = 'rank'; reverse=!reverse">Rank</a></th>
-                                                <th><a href="" ng-click="predicate = 'name'; reverse=!reverse">Namn</a></th>
-                                                <th><a href="" ng-click="predicate = 'driver'; reverse=!reverse">Kusk</a></th>
-                                                <th><a href="" ng-click="predicate = 'gender'; reverse=!reverse">Typ</a></th>
-                                                <th><a href="" ng-click="predicate = 'age'; reverse=!reverse">Ålder</a></th>
-                                                <th><a href="" ng-click="predicate = 'odds'; reverse=!reverse">Odds</a></th>
-                                                <th><a href="" ng-click="predicate = 'marksQuantity'; reverse=!reverse">Streck</a></th>
-                                                <th><a href="" ng-click="predicate = 'marksPercentage'; reverse=!reverse">Streck(%)</a></th>
+                                                <th><a href="" ng-click="predicate = 'startNumber'; reverse=false">nummer</a></th>
+                                                <th><a href="" ng-click="predicate = 'rank'; reverse=false">rank</a></th>
+                                                <th><a href="" ng-click="predicate = 'name'; reverse=false">namn</a></th>
+                                                <th><a href="" ng-click="predicate = 'driver'; reverse=false">kusk</a></th>
+                                                <th><a href="" ng-click="predicate = 'marksPercentage'; reverse=true">V75%</a></th>
+                                                <th><a href="" ng-click="predicate = 'money'; reverse=true">pengar</a></th>
+                                                <th><a href="" ng-click="predicate = 'odds'; reverse=false">v-odds</a></th>
+                                                <th><a href="" ng-click="predicate = 'record'; reverse=false">rekord</a></th>
+                                                <th><a href="" ng-click="predicate = 'placeOdds'; reverse=false">p-odds</a></th>
+                                                <th><a href="" ng-click="predicate = 'startPoints'; reverse=true">poäng</a></th>
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="row in lap.horses | orderBy:predicate:reverse track by $index" ng-class="{{vm.getStatus(row)}}">
-                                                    <td>{{ row.StartNumber }}</td>
+                                                    <td>{{ row.startNumber }}</td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <label class="btn btn-primary btn-xs" ng-model="row.rank" ng-repeat="rank in vm.ranksEnum" btn-radio="rank.val" uncheckable>{{rank.val}}</label>
@@ -97,11 +99,12 @@
                                                     </td>
                                                     <td>{{ row.name }}</td>
                                                     <td>{{ row.driver }}</td>
-                                                    <td>{{ row.gender }}</td>
-                                                    <td>{{ row.age }}</td>
-                                                    <td>{{ row.odds }}</td>
-                                                    <td>{{ row.marksQuantity }}</td>
                                                     <td>{{ row.marksPercentage }}</td>
+                                                    <td>{{ row.money }}</td>
+                                                    <td>{{ row.odds }}</td>
+                                                    <td>{{ row.record }}</td>
+                                                    <td>{{ row.placeOdds }}</td>
+                                                    <td>{{ row.startPoints }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

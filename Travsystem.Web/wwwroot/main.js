@@ -185,7 +185,9 @@
 
     function  formatRaceTitle (race) {
       if (race != null) {
-        return race.betType + ' ' + new Date(race.year, race.month, race.date).toDateString();
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' },
+            date = new Date(race.year, race.month - 1, race.date);
+        return race.betType + ' ' + date.toLocaleDateString("sv-SE", options);
       } else {
         return "";
       }
@@ -238,7 +240,7 @@
       vm.reducedRowsSize = vm.reducedRows.length;
       vm.reductionLevel = vm.systemSize > 0 ? Math.round(((vm.systemSize - vm.reducedRowsSize) / vm.systemSize) * 100.0) : 0;
       vm.colorTable = Coupon.GetColorTable(vm.reducedRows);
-      vm.cost = vm.reducedRowsSize * vm.costMap[vm.selectedRace.BetType];
+      vm.cost = vm.reducedRowsSize * vm.costMap[vm.selectedRace.betType];
     }
 
     function getColorForCell (row, col) {
